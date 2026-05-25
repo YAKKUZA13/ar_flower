@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-    <title>Tilda Inline AR</title>
+    <title>AR</title>
   </head>
   <body>
     <!-- TILDA AR EMBED START: copy this block into Tilda T123 -->
@@ -40,6 +40,11 @@
         background: transparent;
         cursor: pointer;
         touch-action: manipulation;
+      }
+
+      #poster-ar-cta img,
+      #poster-site-cta img {
+        border: 0;
       }
 
       #poster-ar-cta img {
@@ -115,8 +120,8 @@
     <div id="poster-ar-root">
       <model-viewer
         id="poster-ar-viewer"
-        src="/models/pornozamok.glb"
-        ios-src="/models/pornozamok.usdz"
+        src="https://yakkuza13.github.io/ar_flower/models/pornozamok.glb"
+        ios-src="https://yakkuza13.github.io/ar_flower/models/pornozamok.usdz"
         alt="3D model"
         ar
         ar-modes="webxr scene-viewer quick-look"
@@ -138,24 +143,25 @@
       </div>
 
       <button id="poster-ar-cta" type="button" aria-label="Посмотреть AR">
-        <img src="/посмотреть ar.png" alt="Посмотреть AR" />
+        <img src="https://yakkuza13.github.io/ar_flower/ar-cta.png" alt="Посмотреть AR" />
       </button>
 
-      <a id="poster-site-cta" href="https://example.com" aria-label="Перейти на сайт">
-        <img src="/перейти на сайт.png" alt="Перейти на сайт" />
+      <a id="poster-site-cta" href="http://roshvastore.com/" aria-label="Перейти на сайт">
+        <img src="https://yakkuza13.github.io/ar_flower/site-cta.png" alt="Перейти на сайт" />
       </a>
     </div>
 
     <script>
       ;(() => {
-        // Local preview: paths below (requires npm run build + npm run preview).
-        // Tilda: replace with full https://static.tildacdn.com/... URLs from File manager.
+        const CDN_BASE = 'https://yakkuza13.github.io/ar_flower'
+        const MODELS_BASE = 'https://yakkuza13.github.io/ar_flower/models'
+
         const ASSETS = {
-          glb: '/models/pornozamok.glb',
-          usdz: '/models/pornozamok.usdz',
-          arCtaImage: '/посмотреть ar.png',
-          siteCtaImage: '/перейти на сайт.png',
-          siteUrl: 'https://example.com'
+          glb: `${MODELS_BASE}/pornozamok.glb`,
+          usdz: `${MODELS_BASE}/pornozamok.usdz`,
+          arCtaImage: `${CDN_BASE}/ar-cta.png`,
+          siteCtaImage: `${CDN_BASE}/site-cta.png`,
+          siteUrl: 'http://roshvastore.com/'
         }
 
         const viewer = document.querySelector('#poster-ar-viewer')
@@ -167,20 +173,16 @@
           return
         }
 
-        const usdzUrl = new URL(ASSETS.usdz, window.location.href).href
-
         viewer.src = ASSETS.glb
-        viewer.setAttribute('ios-src', usdzUrl)
+        viewer.setAttribute('ios-src', ASSETS.usdz)
 
         const buttonCtaImg = cta.querySelector('img')
-        const arCtaImageUrl = new URL(ASSETS.arCtaImage, window.location.href).href
-
-        if (buttonCtaImg) buttonCtaImg.src = arCtaImageUrl
+        if (buttonCtaImg) buttonCtaImg.src = ASSETS.arCtaImage
 
         const siteCta = document.querySelector('#poster-site-cta')
         const siteCtaImg = siteCta?.querySelector('img')
         if (siteCta) siteCta.href = ASSETS.siteUrl
-        if (siteCtaImg) siteCtaImg.src = new URL(ASSETS.siteCtaImage, window.location.href).href
+        if (siteCtaImg) siteCtaImg.src = ASSETS.siteCtaImage
 
         const setHint = message => {
           hint.textContent = message
