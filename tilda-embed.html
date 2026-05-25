@@ -115,9 +115,10 @@
         ar-placement="floor"
         camera-controls
         autoplay
+        animation-loop
         loading="eager"
         reveal="auto"
-        scale="0.75 0.75 0.75"
+        scale="0.5 0.5 0.5"
         shadow-intensity="1"
         xr-environment
         touch-action="pan-y"
@@ -178,13 +179,23 @@
         }
 
         const playModelAnimation = () => {
-          const [firstAnimation] = viewer.availableAnimations ?? []
+          const animations = viewer.availableAnimations ?? []
+          const [firstAnimation, ...otherAnimations] = animations
 
-          if (!firstAnimation) return
+          if (!firstAnimation) {
+            console.warn('Poster AR: GLB has no animations')
+            return
+          }
 
           viewer.animationName = firstAnimation
           viewer.timeScale = 1
-          viewer.play()
+          viewer.play({ repetitions: Infinity })
+
+          otherAnimations.forEach(name => {
+            if (typeof viewer.appendAnimation === 'function') {
+              viewer.appendAnimation(name, { repetitions: Infinity })
+            }
+          })
         }
 
         const launchAr = async () => {
