@@ -1,0 +1,226 @@
+<!doctype html>
+<html lang="ru">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>Tilda Inline AR</title>
+  </head>
+  <body>
+    <!-- TILDA AR EMBED START: copy this block into Tilda T123 -->
+    <script type="module" src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+
+    <style>
+      #poster-ar-root {
+        position: fixed;
+        inset: 0;
+        overflow: hidden;
+        background:
+          radial-gradient(circle at top, rgba(255, 79, 184, 0.28), transparent 32rem),
+          #050816;
+      }
+
+      #poster-ar-viewer {
+        position: relative;
+        z-index: 1;
+        width: 100vw;
+        height: 100vh;
+        background: transparent;
+      }
+
+      #poster-ar-viewer::part(default-ar-button) {
+        display: none;
+      }
+
+      #poster-ar-cta {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        cursor: pointer;
+        touch-action: manipulation;
+      }
+
+      #poster-ar-cta img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: min(72vw, 320px);
+        max-height: 72px;
+        object-fit: contain;
+        pointer-events: none;
+      }
+
+      #poster-site-cta {
+        position: fixed;
+        z-index: 20;
+        pointer-events: auto;
+        right: max(16px, env(safe-area-inset-right));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        left: max(16px, env(safe-area-inset-left));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+      }
+
+      #poster-site-cta img {
+        display: block;
+        width: min(100%, 520px);
+        height: auto;
+        max-height: 74px;
+        object-fit: contain;
+      }
+
+      #poster-ar-cta:focus-visible,
+      #poster-site-cta:focus-visible {
+        outline: 3px solid rgba(255, 255, 255, 0.95);
+        outline-offset: 4px;
+      }
+
+      #poster-ar-cta {
+        position: fixed;
+        z-index: 20;
+        pointer-events: auto;
+        right: max(16px, env(safe-area-inset-right));
+        bottom: calc(max(16px, env(safe-area-inset-bottom)) + 84px);
+        left: auto;
+        min-width: 48px;
+        min-height: 48px;
+      }
+
+      .poster-ar-hint {
+        position: fixed;
+        z-index: 5;
+        top: max(16px, env(safe-area-inset-top));
+        right: max(16px, env(safe-area-inset-right));
+        left: max(16px, env(safe-area-inset-left));
+        padding: 14px 16px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 18px;
+        background: rgba(5, 8, 22, 0.68);
+        color: rgba(255, 255, 255, 0.86);
+        font: 700 14px/1.35 Arial, sans-serif;
+        text-align: center;
+        pointer-events: none;
+        backdrop-filter: blur(16px);
+      }
+
+      #poster-ar-root:has(model-viewer[ar-status='session-started']) #poster-ar-hint {
+        display: none;
+      }
+    </style>
+
+    <div id="poster-ar-root">
+      <model-viewer
+        id="poster-ar-viewer"
+        src="/models/pornozamok.glb"
+        ios-src="/models/pornozamok.usdz"
+        alt="3D model"
+        ar
+        ar-modes="webxr scene-viewer quick-look"
+        ar-placement="floor"
+        camera-controls
+        autoplay
+        loading="eager"
+        reveal="auto"
+        scale="0.75 0.75 0.75"
+        shadow-intensity="1"
+        xr-environment
+        touch-action="pan-y"
+      >
+        <button slot="ar-button" type="button" hidden aria-hidden="true"></button>
+      </model-viewer>
+
+      <div id="poster-ar-hint" class="poster-ar-hint">
+        Модель загружается
+      </div>
+
+      <button id="poster-ar-cta" type="button" aria-label="Посмотреть AR">
+        <img src="/посмотреть ar.png" alt="Посмотреть AR" />
+      </button>
+
+      <a id="poster-site-cta" href="https://example.com" aria-label="Перейти на сайт">
+        <img src="/перейти на сайт.png" alt="Перейти на сайт" />
+      </a>
+    </div>
+
+    <script>
+      ;(() => {
+        // Local preview: paths below (requires npm run build + npm run preview).
+        // Tilda: replace with full https://static.tildacdn.com/... URLs from File manager.
+        const ASSETS = {
+          glb: '/models/pornozamok.glb',
+          usdz: '/models/pornozamok.usdz',
+          arCtaImage: '/посмотреть ar.png',
+          siteCtaImage: '/перейти на сайт.png',
+          siteUrl: 'https://example.com'
+        }
+
+        const viewer = document.querySelector('#poster-ar-viewer')
+        const cta = document.querySelector('#poster-ar-cta')
+        const hint = document.querySelector('#poster-ar-hint')
+
+        if (!viewer || !cta || !hint) {
+          console.error('Poster AR controls failed to initialize')
+          return
+        }
+
+        const usdzUrl = new URL(ASSETS.usdz, window.location.href).href
+
+        viewer.src = ASSETS.glb
+        viewer.setAttribute('ios-src', usdzUrl)
+
+        const buttonCtaImg = cta.querySelector('img')
+        const arCtaImageUrl = new URL(ASSETS.arCtaImage, window.location.href).href
+
+        if (buttonCtaImg) buttonCtaImg.src = arCtaImageUrl
+
+        const siteCta = document.querySelector('#poster-site-cta')
+        const siteCtaImg = siteCta?.querySelector('img')
+        if (siteCta) siteCta.href = ASSETS.siteUrl
+        if (siteCtaImg) siteCtaImg.src = new URL(ASSETS.siteCtaImage, window.location.href).href
+
+        const setHint = message => {
+          hint.textContent = message
+        }
+
+        const playModelAnimation = () => {
+          const [firstAnimation] = viewer.availableAnimations ?? []
+
+          if (!firstAnimation) return
+
+          viewer.animationName = firstAnimation
+          viewer.timeScale = 1
+          viewer.play()
+        }
+
+        const launchAr = async () => {
+          try {
+            setHint('Открываю AR...')
+            await viewer.activateAR()
+          } catch (error) {
+            setHint('AR не открылся. Проверь USDZ или открой в Safari на iPhone.')
+            console.error('Poster AR failed to activate', error)
+          }
+        }
+
+        cta.addEventListener('click', launchAr)
+
+        viewer.addEventListener('load', () => {
+          playModelAnimation()
+          setHint('Модель загружена. Нажми кнопку, чтобы открыть AR.')
+        })
+
+        viewer.addEventListener('ar-status', event => {
+          if (event.detail.status === 'session-started') {
+            playModelAnimation()
+            setHint('AR запущен.')
+          }
+        })
+      })()
+    </script>
+    <!-- TILDA AR EMBED END -->
+  </body>
+</html>
