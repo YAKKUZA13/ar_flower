@@ -31,68 +31,58 @@
         display: none;
       }
 
-      #poster-ar-cta {
+      .poster-ar-actions {
+        position: fixed;
+        z-index: 20;
+        right: max(16px, env(safe-area-inset-right));
+        bottom: max(16px, env(safe-area-inset-bottom));
+        left: max(16px, env(safe-area-inset-left));
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 12px;
+        pointer-events: none;
+      }
+
+      #poster-ar-cta,
+      #poster-site-cta {
         display: flex;
         align-items: center;
         justify-content: center;
         padding: 0;
         border: 0;
         background: transparent;
+        pointer-events: auto;
+        text-decoration: none;
         cursor: pointer;
         touch-action: manipulation;
+        min-width: 48px;
+        min-height: 48px;
       }
 
       #poster-ar-cta img,
       #poster-site-cta img {
+        display: block;
+        width: auto;
+        height: auto;
+        max-width: min(100%, 520px);
+        object-fit: contain;
         border: 0;
       }
 
       #poster-ar-cta img {
-        display: block;
-        width: auto;
-        height: auto;
-        max-width: min(72vw, 320px);
         max-height: 72px;
-        object-fit: contain;
         pointer-events: none;
       }
 
-      #poster-site-cta {
-        position: fixed;
-        z-index: 20;
-        pointer-events: auto;
-        right: max(16px, env(safe-area-inset-right));
-        bottom: max(16px, env(safe-area-inset-bottom));
-        left: max(16px, env(safe-area-inset-left));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-decoration: none;
-      }
-
       #poster-site-cta img {
-        display: block;
-        width: min(100%, 520px);
-        height: auto;
         max-height: 74px;
-        object-fit: contain;
       }
 
       #poster-ar-cta:focus-visible,
       #poster-site-cta:focus-visible {
         outline: 3px solid rgba(255, 255, 255, 0.95);
         outline-offset: 4px;
-      }
-
-      #poster-ar-cta {
-        position: fixed;
-        z-index: 20;
-        pointer-events: auto;
-        right: max(16px, env(safe-area-inset-right));
-        bottom: calc(max(16px, env(safe-area-inset-bottom)) + 84px);
-        left: auto;
-        min-width: 48px;
-        min-height: 48px;
       }
 
       .poster-ar-hint {
@@ -142,13 +132,15 @@
         Модель загружается
       </div>
 
-      <button id="poster-ar-cta" type="button" aria-label="Посмотреть AR">
-        <img src="https://yakkuza13.github.io/ar_flower/ar-cta.png" alt="Посмотреть AR" />
-      </button>
+      <div class="poster-ar-actions">
+        <button id="poster-ar-cta" type="button" aria-label="Посмотреть AR">
+          <img src="https://yakkuza13.github.io/ar_flower/ar-cta.png" alt="Посмотреть AR" />
+        </button>
 
-      <a id="poster-site-cta" href="http://roshvastore.com/" aria-label="Перейти на сайт">
-        <img src="https://yakkuza13.github.io/ar_flower/site-cta.png" alt="Перейти на сайт" />
-      </a>
+        <a id="poster-site-cta" href="http://roshvastore.com/" aria-label="Перейти на сайт">
+          <img src="https://yakkuza13.github.io/ar_flower/site-cta.png" alt="Перейти на сайт" />
+        </a>
+      </div>
     </div>
 
     <script>
